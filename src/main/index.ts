@@ -4,6 +4,10 @@ import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import { initDatabase, closeDatabase } from './database'
 import { registerIpcHandlers } from './ipc'
 
+if (process.platform === 'linux') {
+  app.commandLine.appendSwitch('password-store', 'gnome-libsecret')
+}
+
 function createWindow(): void {
   const mainWindow = new BrowserWindow({
     width: 1200,
