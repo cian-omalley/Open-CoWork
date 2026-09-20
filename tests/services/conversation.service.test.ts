@@ -44,9 +44,22 @@ describe('ConversationService', () => {
     })
 
     it('should return all conversations ordered by updatedAt desc', async () => {
-      await conversationService.create('First')
-      await conversationService.create('Second')
-      await conversationService.create('Third')
+      const first = await conversationService.create('First')
+      const second = await conversationService.create('Second')
+      const third = await conversationService.create('Third')
+
+      await prisma.conversation.update({
+        where: { id: first.id },
+        data: { updatedAt: new Date('2026-01-01T00:00:01.000Z') }
+      })
+      await prisma.conversation.update({
+        where: { id: second.id },
+        data: { updatedAt: new Date('2026-01-01T00:00:02.000Z') }
+      })
+      await prisma.conversation.update({
+        where: { id: third.id },
+        data: { updatedAt: new Date('2026-01-01T00:00:03.000Z') }
+      })
 
       const conversations = await conversationService.list()
 
